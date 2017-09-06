@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using GigHub2.Models;
+using GigHub2.ViewModels;
 
 namespace GigHub2.Controllers
 {
