@@ -1,4 +1,5 @@
-﻿using GigHub2.Models;
+﻿using System;
+using GigHub2.Models;
 using GigHub2.ViewModels;
 using Microsoft.AspNet.Identity;
 using System.Data.Entity;
@@ -17,6 +18,18 @@ namespace GigHub2.Controllers
         }
 
         [Authorize]
+        public ActionResult Mine()
+        {
+            var userId = User.Identity.GetUserId();
+            var gigs = _context.Gigs
+                .Where(g => g.ArtistId == userId && g.DateTime > DateTime.Now)
+                .Include(g => g.Genre)
+                .ToList();
+
+            return View(gigs);
+        }
+
+      [Authorize]
         public ActionResult Attending()
         {
             var userId = User.Identity.GetUserId();
