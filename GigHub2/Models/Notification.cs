@@ -38,10 +38,10 @@ namespace GigHub2.Models
             return new Notification(NotificationType.GigCanceled, gig);
         }
 
-        public static Notification GigUpdated(Gig newGig, DateTime originaDateTime, string originalVenue)
+        public static Notification GigUpdated(Gig newGig, DateTime originalDateTime, string originalVenue)
         {
             var notification = new Notification(NotificationType.GigUpdated, newGig);
-            notification.OriginalDateTime = originaDateTime;
+            notification.OriginalDateTime = originalDateTime;
             notification.OriginalVenue = originalVenue;
 
             return notification;
