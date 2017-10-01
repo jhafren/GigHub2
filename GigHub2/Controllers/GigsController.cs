@@ -22,9 +22,9 @@ namespace GigHub2.Controllers
         {
             var userId = User.Identity.GetUserId();
             var gigs = _context.Gigs
-                .Where(g => 
-                    g.ArtistId == userId && 
-                    g.DateTime > DateTime.Now && 
+                .Where(g =>
+                    g.ArtistId == userId &&
+                    g.DateTime > DateTime.Now &&
                     !g.IsCanceled)
                 .Include(g => g.Genre)
                 .ToList();
@@ -109,6 +109,12 @@ namespace GigHub2.Controllers
             return RedirectToAction("Mine", "Gigs");
         }
 
+        [HttpPost]
+        public ActionResult Search(GigsViewModel viewModel)
+        {
+            return RedirectToAction("Index", "Home", new { query = viewModel.SearchTerm });
+        }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -126,7 +132,7 @@ namespace GigHub2.Controllers
                 .Single(g => g.Id == viewModel.Id && g.ArtistId == userId);
 
             gig.Modify(viewModel.Venue, viewModel.GetDateTime(), viewModel.Genre);
-            
+
             _context.SaveChanges();
 
             return RedirectToAction("Mine", "Gigs");
