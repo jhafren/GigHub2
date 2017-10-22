@@ -14,7 +14,7 @@
         </div>
     </div>
 }
-<ul class="gigs voffset4">
+<ul id ="gigs" class="gigs voffset4">
     @foreach (var gig in Model.UpcomingGigs)
     {
         <li>
@@ -40,10 +40,10 @@
                             </span>
                         }
 
-                        @if (Model.ShowActions)
-                        {
-                            <button data-user-id="@gig.ArtistId" class="btn btn-link btn-sm js-toggle-follow">Follow</button>
-                        }
+                    @if (Model.ShowActions)
+                    {
+                        <button data-user-id="@gig.ArtistId" class="btn btn-link btn-sm js-toggle-follow">Follow</button>
+                    }
                 </span>
                 <span class="genre">
                     @gig.Genre.Name
@@ -66,7 +66,7 @@
 {
     <script>
         $(document).ready(function () {
-            GigsController.init();
+            GigsController.init("#gigs");
 
             $(".js-toggle-follow").click(function(e) {
                 var button = $(e.target);
@@ -77,7 +77,7 @@
                     .fail(function () {
                         alert("Something failed!");
                     });
-                
+
             });
         });
     </script>
