@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Web.Http;
+﻿using System.Web.Http;
+using GigHub2.Core;
 using GigHub2.Core.Dtos;
 using GigHub2.Core.Models;
-using GigHub2.Persistence;
 using Microsoft.AspNet.Identity;
 
 namespace GigHub2.Controllers.Api
@@ -10,11 +9,11 @@ namespace GigHub2.Controllers.Api
     [Authorize]
     public class FollowingsController : ApiController
     {
-        private ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public FollowingsController()
+        public FollowingsController(IUnitOfWork unitOfWork)
         {
-            _context = new ApplicationDbContext();
+            _unitOfWork = unitOfWork;
         }
 
         [HttpPost]
@@ -22,7 +21,7 @@ namespace GigHub2.Controllers.Api
         {
             var userId = User.Identity.GetUserId();
 
-            var exists = _context.Followings.Any(f => f.FollowerId == userId && f.FolloweeId == dto.FolloweeId);
+            var exists = _unitOfWork.Followings.GetFollowing(dto.FolloweeId, userId) != null;
             if (exists)
                 return BadRequest("Following already exists.");
 
@@ -31,8 +30,8 @@ namespace GigHub2.Controllers.Api
                 FollowerId = userId,
                 FolloweeId = dto.FolloweeId
             };
-            _context.Followings.Add(following);
-            _context.SaveChanges();
+            _unitOfWork.Followings.Add(following);
+            _unitOfWork.Complete();
 
             return Ok();
         }
@@ -42,14 +41,13 @@ namespace GigHub2.Controllers.Api
         {
             var userId = User.Identity.GetUserId();
 
-            var following = _context.Followings
-                .SingleOrDefault(f => f.FolloweeId == id && f.FollowerId == userId);
+            var following = _unitOfWork.Followings.GetFollowing(id, userId);
 
             if (following == null)
                 return NotFound();
 
-            _context.Followings.Remove(following);
-            _context.SaveChanges();
+            _unitOfWork.Followings.Remove(following);
+            _unitOfWork.Complete();
 
             return Ok(id);
         }
