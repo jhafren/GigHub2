@@ -1,13 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace GigHub2.Core.Models
+﻿namespace GigHub2.Core.Models
 {
     public class Genre
     {
         public byte Id { get; set; }
-
-        [Required]
-        [StringLength(255)]
         public string Name { get; set; }
     }
 }
