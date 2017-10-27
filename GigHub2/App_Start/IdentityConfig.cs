@@ -10,7 +10,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using GigHub2.Models;
+using GigHub2.Core.Models;
+using GigHub2.Persistence;
 
 namespace GigHub2
 {

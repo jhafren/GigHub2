@@ -1,11 +1,7 @@
-﻿using System;
-using System.Data.Entity;
-using System.Collections.Generic;
+﻿using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using GigHub2.Models;
+using GigHub2.Persistence;
 using Microsoft.AspNet.Identity;
 
 namespace GigHub2.Controllers.Api
@@ -27,12 +23,12 @@ namespace GigHub2.Controllers.Api
             var gig = _context.Gigs
                 .Include(g => g.Attendances.Select(a => a.Attendee))
                 .Single(g => g.Id == id && g.ArtistId == userId);
-                
+
 
             if (gig.IsCanceled)
                 return NotFound();
 
-            gig.Cancel();           
+            gig.Cancel();
 
             _context.SaveChanges();
 
