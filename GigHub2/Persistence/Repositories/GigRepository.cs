@@ -9,9 +9,9 @@ namespace GigHub2.Persistence.Repositories
 {
     public class GigRepository : IGigRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
 
-        public GigRepository(ApplicationDbContext context)
+        public GigRepository(IApplicationDbContext context)
         {
             _context = context;
         }
@@ -33,7 +33,7 @@ namespace GigHub2.Persistence.Repositories
                 .ToList();
         }
 
-        public IEnumerable<Gig> GetUpcomingGigsByUser(string userId)
+        public IEnumerable<Gig> GetUpcomingGigsByArtist(string userId)
         {
             return _context.Gigs
                 .Where(g =>
